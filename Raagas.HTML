@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <title>Carnatic Music Raagas</title>
+	
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+	<script src="/js/jquery.js"></script>
+    <script src="/js/tone.js"></script>
+	<script src="/js/popper.js" type="text/javascript"></script>
+	<script src="/js/bootstrap.min.js" ></script>
+	
+	<link rel="stylesheet" href="/css/bootstrap.min.css">
+	
+    <style type="text/css">
+        .chart {
+            shape-rendering: crispEdges;
+        }
+
+        .mini text {
+            font: 9px sans-serif;
+        }
+
+        .main text {
+            font: 12px sans-serif;
+        }
+
+        .miniItem0 {
+            fill: darksalmon;
+            stroke: black;
+            stroke-width: 2;
+        }
+
+        .miniItem1 {
+            fill: darkolivegreen;
+            fill-opacity: .7;
+            stroke: black;
+            stroke-width: 2
+        }
+
+        .miniItem2 {
+            fill: slategray;
+            fill-opacity: .7;
+            stroke: black;
+            stroke-width: 2;
+        }
+        .miniItem3 {
+            fill: #59e95e;
+            fill-opacity: .7;
+            stroke: black;
+            stroke-width: 2;
+        }
+        .miniItem4 {
+            fill: slategray;
+            fill-opacity: .7;
+            stroke: black;
+            stroke-width: 2;
+        }
+        .miniItem5 {
+            fill: #e94cbb;
+            fill-opacity: .7;
+            stroke: black;
+            stroke-width: 2;
+        }
+        .miniItem6 {
+            fill: #59e95e;
+            fill-opacity: .7;
+            stroke: black;
+            stroke-width: 2;
+        }
+        .miniItem7 {
+            fill: slategray;
+            fill-opacity: .7;
+            stroke: black;
+            stroke-width: 2;
+        }
+        .miniItem8 {
+            fill: #b077e9;
+            fill-opacity: .7;
+            stroke: black;
+            stroke-width: 2;
+        }
+        .miniItem9 {
+            fill: #64326b;
+            fill-opacity: .7;
+            stroke: black;
+            stroke-width: 2;
+        }
+        .miniItem10 {
+            fill: darksalmon;
+            stroke: black;
+            stroke-width: 2;
+        }
+
+        .miniItem11{
+            fill: darkolivegreen;
+            fill-opacity: .7;
+            stroke: black;
+            stroke-width: 2
+        }
+
+        .miniItem12 {
+            fill: slategray;
+            fill-opacity: .7;
+            stroke: black;
+            stroke-width: 2;
+        }
+        .miniItem13 {
+            fill: #59e95e;
+            fill-opacity: .7;
+            stroke: black;
+            stroke-width: 2;
+        }
+        .miniItem14 {
+            fill: slategray;
+            fill-opacity: .7;
+            stroke: black;
+            stroke-width: 2;
+        }
+        .miniItem15 {
+            fill: #e94cbb;
+            fill-opacity: .7;
+            stroke: black;
+            stroke-width: 2;
+        }
+        .miniItem16 {
+            fill: #59e95e;
+            fill-opacity: .7;
+            stroke: black;
+            stroke-width: 2;
+        }
+        .miniItem17 {
+            fill: slategray;
+            fill-opacity: .7;
+            stroke: black;
+            stroke-width: 2;
+        }
+        .miniItem18 {
+            fill: #b077e9;
+            fill-opacity: .7;
+            stroke: black;
+            stroke-width: 2;
+        }
+        .miniItem19 {
+            fill: #64326b;
+            fill-opacity: .7;
+            stroke: black;
+            stroke-width: 2;
+        }
+        .miniItem20 {
+            fill: #64326b;
+            fill-opacity: .7;
+            stroke: black;
+            stroke-width: 2;
+        }
+        .brush .extent {
+            stroke: gray;
+            fill: dodgerblue;
+            fill-opacity: .365;
+        }
+
+    </style>
+</head>
+<body>
+<div>  
+    <div class="btn-group">
+	<button aria-expanded="true" data-toggle="dropdown" class="btn btn-primary btn-lg dropdown-toggle" type="button">Select Chakra:</button>
+	<ul class="dropdown-menu">
+	<li><a><img class="img-thumbnail hidden-xs" src="">Indra</a></li>
+	<li><a><img class="img-thumbnail hidden-xs" src="">Netra</a></li>
+	<li><a><img class="img-thumbnail hidden-xs" src="">Agni</a></li>
+	<li><a><img class="img-thumbnail hidden-xs" src="">Veda</a></li>
+	<li><a><img class="img-thumbnail hidden-xs" src="">Baana</a></li>
+	<li><a><img class="img-thumbnail hidden-xs" src="">Rutu</a></li>	
+	<li><a><img class="img-thumbnail hidden-xs" src="">Rishi</a></li>
+	<li><a><img class="img-thumbnail hidden-xs" src="">Vasu</a></li>
+	<li><a><img class="img-thumbnail hidden-xs" src="">Brahma</a></li>	
+	<li><a><img class="img-thumbnail hidden-xs" src="">Dasha</a></li>
+	<li><a><img class="img-thumbnail hidden-xs" src="">Rutu</a></li>	
+	<li><a><img class="img-thumbnail hidden-xs" src="">Aditya</a></li>		
+	</ul></div>  Select Raaga: </div>
+<div id='Notes'></div>
+
+<div onclick="dbcl()"> jgkjg</div>
+</body>
+
+<script type="text/javascript">
+    
+	
+  
+
+
+
+   
+	spaceBetweenLines = 11
+   
+	margin = 2
+	thicknessLine = 2
+	height = (spaceBetweenLines+thicknessLine)*13
+	width =1300
+	
+   var Raaga = [{"swara":"Sa","position": 1,"color":"black", "notes":"G#3"},{"swara":"Re","position": 2,"color":"black","notes":"A3"},{"swara":"Ga","position": 5,"color":"black","notes":"C4"},{"swara":"Ma","position": 6,"color":"black","notes":'C#4'},{"swara":"Pa","position": 8,"color":"black","notes":'D#4'},{"swara":"Da","position": 9,"color":"black","notes":'E4'},{"swara":"Ne","position": 12,"color":"black","notes":'G4'},{"swara":"SA","position": 13,"color":"black","notes":'G#4'}]
+   
+   var Swara = ['Sa','Re','Ga','Ma','Pa','Da','Ne','SA','SA','Ne','Da','Pa','Ma','Ga','Re','Sa']
+   var Swara = ['Sa','Re','Ga','Ma','Sa','Re','Ga','Ma','Sa','Re','Ga','Ma','Pa','Da','Ne','SA','SA','Ne','Da','Pa','SA','Ne','Da','Pa','SA','Ne','Da','Pa','Ma','Ga','Re','Sa']
+   var Swara = ['Sa','Re','Ga','Ma','Sa','Re','Sa','Re','Sa','Re','Ga','Ma','Pa','Da','Ne','SA','SA','Ne','Da','Pa','SA','Ne','SA','Ne','SA','Ne','Da','Pa','Ma','Ga','Re','Sa']
+   var Swara = ['Sa','Re','Ga','Ma','Pa',';','Sa','Re','Sa','Re','Ga','Ma','Pa','Da','Ne','SA','SA','Ne','Da','Pa','Ma',';','SA','Ne','SA','Ne','Da','Pa','Ma','Ga','Re','Sa']
+   var Swara = ['Sa','Re','Ga','Ma','Pa',';','Pa',';','Sa','Re','Ga','Ma','Pa','Da','Ne','SA','SA','Ne','Da','Pa','Ma',';','Ma',';','SA','Ne','Da','Pa','Ma','Ga','Re','Sa']
+   var Swara = ['Sa','Re','Ga','Ma','Pa','Ma','Ga','Re','Sa','Re','Ga','Ma','Pa','Da','Ne','SA','SA','Ne','Da','Pa','Ma','Pa','Da','Ne','SA','Ne','Da','Pa','Ma','Ga','Re','Sa']
+   var Swara = ['Sa','Re','Ga','Ma','Pa','Ma','Ga','Re','Sa','Re','Ga','Ma','Pa','Da','Ne','SA','SA','Ne','Da','Pa','Ma','Pa','Da','Ne','SA','Ne','Da','Pa','Ma','Ga','Re','Sa']
+   var Swara = ['Sa','Re','Ga','Ma','Sa','Ma','Ga','Re','Sa','Re','Ga','Ma','Pa','Da','Ne','SA','SA','Ne','Da','Pa','Sa','Pa','Da','Ne','SA','Ne','Da','Pa','Ma','Ga','Re','Sa']
+   var Swara = ['Sa','Re','Ga','Ma','Re','Ga','Ma','Pa','Sa','Re','Ga','Ma','Pa','Da','Ne','SA','SA','Ne','Da','Pa','Ne','Da','Pa','Ma','SA','Ne','Da','Pa','Ma','Ga','Re','Sa']
+   var Swara = ['Sa','Re','Ga','Ma','Pa',';','Ga','Ma','Pa',';',';',';','Pa',';',';',';','Ga','Ma','Pa','Da','Ne','Da','Pa','Ma','Ga','Ma','Pa','Ga','Ma','Ga','Re','Sa']
+   
+   var Swara = ['SA',';','Ne','Da','Ne',';','Da','Pa','Da',';','Pa','Ma','Pa',';','Pa',';','Ga','Ma','Pa','Da','Ne','Da','Pa','Ma','Ga','Ma','Pa','Ga','Ma','Ga','Re','Sa']
+   var Swara = ['Sa','Re','Ga','Sa','Re','Ga','Sa','Re','Sa','Re','Ga','Ma','Pa','Da','Ne','SA','SA','Ne','Da','SA','Ne','Da','Sa','Ne','Sa','Ne','Da','Pa','Ma','Ga','Re','Sa']
+   var Swara = ['SA','SA','Ne','Da','Ne','Ne','Da','Pa','Da','Da','Pa','Ma','Pa',';','Pa',';','Ga','Ma','Pa','Da','Ne','Da','Pa','Ma','Ga','Ma','Pa','Ga','Ma','Ga','Re','Sa']
+   var Swara = ['Sa','Re','Ga','Ma','Pa',';','Pa',';','Sa','Re','Ga','Ma','Pa','Da','Ne','SA','SA','Ne','Da','Pa','Ma',';','Ma',';','SA','Ne','Da','Pa','Ma','Ga','Re','Sa']
+   var Swara = ['Sa','Re','Ga','Ma','Pa','Da','Ne','SA','SA','Ne','Da','Pa','Ma','Ga','Re','Sa']
+  
+   
+ var DataBase = [
+ {"Lesson":"Saralivarase","LessonNo": 1 , "SwaraStana" : ['Sa','Re','Ga','Ma','Pa','Da','Ne','SA','SA','Ne','Da','Pa','Ma','Ga','Re','Sa']},
+ {"Lesson":"Saralivarase","LessonNo": 2 , "SwaraStana" : ['Sa','Re','Ga','Ma','Sa','Re','Ga','Ma','Sa','Re','Ga','Ma','Pa','Da','Ne','SA','SA','Ne','Da','Pa','SA','Ne','Da','Pa','SA','Ne','Da','Pa','Ma','Ga','Re','Sa']},
+ {"Lesson":"Saralivarase","LessonNo": 3 , "SwaraStana" : ['Sa','Re','Ga','Ma','Sa','Re','Sa','Re','Sa','Re','Ga','Ma','Pa','Da','Ne','SA','SA','Ne','Da','Pa','SA','Ne','SA','Ne','SA','Ne','Da','Pa','Ma','Ga','Re','Sa']},
+ {"Lesson":"Saralivarase","LessonNo": 4 , "SwaraStana" : ['Sa','Re','Ga','Ma','Pa',';','Sa','Re','Sa','Re','Ga','Ma','Pa','Da','Ne','SA','SA','Ne','Da','Pa','Ma',';','SA','Ne','SA','Ne','Da','Pa','Ma','Ga','Re','Sa']},
+ {"Lesson":"Saralivarase","LessonNo": 5 , "SwaraStana" : ['Sa','Re','Ga','Ma','Pa',';','Pa',';','Sa','Re','Ga','Ma','Pa','Da','Ne','SA','SA','Ne','Da','Pa','Ma',';','Ma',';','SA','Ne','Da','Pa','Ma','Ga','Re','Sa']},
+ {"Lesson":"Saralivarase","LessonNo": 6 , "SwaraStana" : ['Sa','Re','Ga','Ma','Pa','Ma','Ga','Re','Sa','Re','Ga','Ma','Pa','Da','Ne','SA','SA','Ne','Da','Pa','Ma','Pa','Da','Ne','SA','Ne','Da','Pa','Ma','Ga','Re','Sa']},
+ {"Lesson":"Saralivarase","LessonNo": 7 , "SwaraStana" : ['Sa','Re','Ga','Ma','Pa','Ma','Ga','Re','Sa','Re','Ga','Ma','Pa','Da','Ne','SA','SA','Ne','Da','Pa','Ma','Pa','Da','Ne','SA','Ne','Da','Pa','Ma','Ga','Re','Sa']},
+ {"Lesson":"Saralivarase","LessonNo": 8 , "SwaraStana" : ['Sa','Re','Ga','Ma','Sa','Ma','Ga','Re','Sa','Re','Ga','Ma','Pa','Da','Ne','SA','SA','Ne','Da','Pa','Sa','Pa','Da','Ne','SA','Ne','Da','Pa','Ma','Ga','Re','Sa']},
+ {"Lesson":"Saralivarase","LessonNo": 9 , "SwaraStana" : ['Sa','Re','Ga','Ma','Re','Ga','Ma','Pa','Sa','Re','Ga','Ma','Pa','Da','Ne','SA','SA','Ne','Da','Pa','Ne','Da','Pa','Ma','SA','Ne','Da','Pa','Ma','Ga','Re','Sa']},
+ {"Lesson":"Saralivarase","LessonNo": 10 ,"SwaraStana" : ['Sa','Re','Ga','Ma','Pa',';','Ga','Ma','Pa',';',';',';','Pa',';',';',';','Ga','Ma','Pa','Da','Ne','Da','Pa','Ma','Ga','Ma','Pa','Ga','Ma','Ga','Re','Sa']},
+   
+ {"Lesson":"Saralivarase","LessonNo": 11 ,"SwaraStana" : ['SA',';','Ne','Da','Ne',';','Da','Pa','Da',';','Pa','Ma','Pa',';','Pa',';','Ga','Ma','Pa','Da','Ne','Da','Pa','Ma','Ga','Ma','Pa','Ga','Ma','Ga','Re','Sa']},
+ {"Lesson":"Saralivarase","LessonNo": 12 ,"SwaraStana" : ['Sa','Re','Ga','Sa','Re','Ga','Sa','Re','Sa','Re','Ga','Ma','Pa','Da','Ne','SA','SA','Ne','Da','SA','Ne','Da','Sa','Ne','Sa','Ne','Da','Pa','Ma','Ga','Re','Sa']},
+ {"Lesson":"Saralivarase","LessonNo": 13 , "SwaraStana" : ['SA','SA','Ne','Da','Ne','Ne','Da','Pa','Da','Da','Pa','Ma','Pa',';','Pa',';','Ga','Ma','Pa','Da','Ne','Da','Pa','Ma','Ga','Ma','Pa','Ga','Ma','Ga','Re','Sa']},
+ {"Lesson":"Saralivarase","LessonNo": 14 , "SwaraStana" : ['Sa','Re','Ga','Ma','Pa',';','Pa',';','Sa','Re','Ga','Ma','Pa','Da','Ne','SA','SA','Ne','Da','Pa','Ma',';','Ma',';','SA','Ne','Da','Pa','Ma','Ga','Re','Sa']}]
+   
+   
+   var SwaraUse = $.extend({}, true, Swara)
+   
+   
+   function getSwaraPosition(Raaga,Swara,SwaraUse){
+   var returnvalue = []
+
+   for(var i =0; i<Swara.length; i++){
+   rad = 5
+   //console.log(Swara[i])
+   if(Swara[i] == ";"){rad = 0; SwaraUse[i]=prevSwara }
+   if(Swara[i+1] == ";"){ SwaraUse[i+1]=SwaraUse[i] }
+   if(Swara[i] != ";"){prevSwara = SwaraUse[i]}
+   cur = Raaga.filter(function(d) { return d.swara === SwaraUse[i]; })[0].position 
+   if( i == Swara.length-1){nxt = cur}
+  else{nxt = Raaga.filter(function(d) { return d.swara == SwaraUse[i+1]; })[0].position ;}
+	 
+	 note =Raaga.filter(function(d) { return d.swara == SwaraUse[i]; })[0].notes ;
+	returnvalue.push({'current': cur , 'next' : nxt,'radius':rad ,'Notes': note})
+	
+	}
+   return returnvalue
+   }
+   var SwaraPosition = getSwaraPosition(Raaga,Swara,SwaraUse)
+   
+   
+ 
+   var speed = 1
+   var beat = 8
+   
+   var nocycles = (Math.floor(Swara.length/beat))/speed
+   
+   var cyclelength = width/(4*speed);
+   var notespacing = cyclelength/beat;
+   
+   var chart = d3.select("#Notes").append("svg")
+        .attr("width", width)
+        .attr("height", height).attr("transform", "translate(0 , 40)");
+   var maxnn = 13;   
+
+   /* var mini = chart.append("g").selectAll(".Keys").data([1,2,3,4,5,6,7,8,9,10,11,12]).enter().append("rect").attr("class",'Keys').attr('x', function(d) { return d*20; } ).attr('height', 35).attr('width',20).attr('fill','white').attr('stroke','black');	
+	chart.append("g").selectAll(".keytext").data([1,2,3,4,5,6,7,8,9,10,11,12]).enter().append("text").attr("class",'keytext').text(function(d){return d}).attr('x', function(d) { return d*20; } ).attr('y',15)
+        
+   */
+   var mini = chart.append("g").attr("transform", "translate(25 , 0)").selectAll(".NoteLines").data(Raaga).enter().append("line").attr("class",'NoteLines')
+   .attr("y1", function(d){return (maxnn-d.position)*spaceBetweenLines}).attr("y2", function(d){return (maxnn-d.position)*spaceBetweenLines}).attr("x1", 0).attr("x2", 3000).attr('stroke',function(d){return d.color}).style("stroke-width", thicknessLine)
+   
+   var notecircles = chart.append("g").attr("transform", "translate(25 , 0)").selectAll('.NoteCircles').data(SwaraPosition).enter().append("circle")
+   .attr("class","NoteCircles").attr("r",function(d){return d.radius}).attr("cx",function(d,i){return(i*notespacing)})
+   .attr("cy",function(d){return (maxnn-d.current)*spaceBetweenLines})
+   
+ /*  var noteconnections = chart.append("g").attr("transform", "translate(25 , 0)").selectAll('.NoteConnections').data(SwaraPosition).enter().append("path")
+   .attr("class","NoteConnections").attr("d",function(d,i){
+   xstart = i*notespacing
+   xend = (i+1)*notespacing
+   ystart = (maxnn - d.current) *  spaceBetweenLines
+   yend = (maxnn - d.next) *  spaceBetweenLines
+   return("M"+xstart+","+ystart+" L"+xend+","+ystart + " L"+xend+","+yend )
+   }).attr("fill","none").attr("stroke","black").attr("stroke-width",3)
+   
+   noteconnections.transition().duration(0) */
+   
+      var noteconnections = chart.append("g").attr("transform", "translate(25 , 0)").selectAll('.NoteConnections').data(SwaraPosition).enter().append("path")
+   .attr("class","NoteConnections").attr("d",function(d,i){
+   xstart = i*notespacing
+   xend = (i+1)*notespacing
+   ystart = (maxnn - d.current) *  spaceBetweenLines
+   yend = (maxnn - d.next) *  spaceBetweenLines
+   return("M"+xstart+","+ystart+" L"+xend+","+ystart   )
+   }).attr("fill","none").attr("stroke","blue").attr("stroke-width",3)
+   .attr("stroke-dasharray", function() {
+                        var totalLength = this.getTotalLength();
+                        return totalLength + " " + totalLength;
+                    })
+                  .attr("stroke-dashoffset", function() {
+                        var totalLength = this.getTotalLength();
+                        return totalLength;
+                    })
+                    .transition()
+					    .delay(function(d,i){return i*1000})
+                        .duration(function() { return 1000;}) 
+                        .attr("stroke-dashoffset", 0)
+						.on("start", function(d) {var synth = new Tone.Synth().toMaster(); synth.triggerAttackRelease(d.Notes, '3n'); });
+        
+   
+      var noteconnectionsv = chart.append("g").attr("transform", "translate(25 , 0)").selectAll('.NoteConnectionsv').data(SwaraPosition).enter().append("path")
+   .attr("class","NoteConnectionsv").attr("d",function(d,i){
+   return("M"+(i+1)*notespacing+","+(maxnn - d.current) *  spaceBetweenLines  + " L"+ (i+1)*notespacing + ","+ (maxnn - d.next) *  spaceBetweenLines )
+   }).attr("fill","none").attr("stroke","blue").attr("stroke-width",3).attr("stroke-dasharray", function() {
+                        var totalLength = this.getTotalLength();
+                        return totalLength + " " + totalLength;
+                    })
+                  .attr("stroke-dashoffset", function() {
+                        var totalLength = this.getTotalLength();
+                        return totalLength;
+                    })
+                    .transition()
+					    .delay(function(d,i){return (i+1)*1000})
+                        .attr("stroke-dashoffset", 0);
+   
+  
+
+</script>
+</body>
+</html>
