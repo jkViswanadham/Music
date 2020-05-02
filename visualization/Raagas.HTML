@@ -1,0 +1,209 @@
+<HTML>
+<script src="/lib/jquery.js"></script>
+<script src="/lib/d3.v5.min.js"></script>
+<body>
+<div id="graph"></div>
+<div>
+Creating the sunburst
+   a. varying width for certain levels
+   b. color by level
+Adding Labels for levels of sunburst   
+Adding extended labels for sunburst
+   a. label orientation
+   b. label color
+</div>
+</body>
+
+
+
+<script>
+
+d3.csv("/data/raagas.csv").then(function(data) {
+  var Level_Heirarchy = d3.nest().key(function(d) { return d.Level1; }).key(function(d) { return d.Level2; })
+ .key(function(d) { return d.Level3; }).key(function(d) { return d.Level4; })
+ .key(function(d) { return d.RagaNo; }).key(function(d) { return d.Raaga; }).rollup(function(v) {return {size: d3.sum(v, function(d) { return 1; })}}).entries(data);
+
+
+ var root = {"name":'TreeMap', "children": []};
+for(var i=0; i<Level_Heirarchy.length; i++) {result = {"name":Level_Heirarchy[i].key,"children":[]}
+			for(var j=0; j<Level_Heirarchy[i].values.length;j++){result.children.push({"name":Level_Heirarchy[i].values[j].key, "children":[] });
+				  for(var k=0; k<Level_Heirarchy[i].values[j].values.length;k++){result.children[j].children.push({"name":Level_Heirarchy[i].values[j].values[k].key, "children":[] });
+					 for(var l=0; l<Level_Heirarchy[i].values[j].values[k].values.length;l++){result.children[j].children[k].children.push({"name":Level_Heirarchy[i].values[j].values[k].values[l].key, "children":[]  });
+						for(var m=0; m <Level_Heirarchy[i].values[j].values[k].values[l].values.length;m++ ){
+						
+						result.children[j].children[k].children[l].children.push({"name":Level_Heirarchy[i].values[j].values[k].values[l].values[m].key, "size":1 ,"RaagaName": Level_Heirarchy[i].values[j].values[k].values[l].values[m].values[0].key    });
+						}}}}
+							root.children.push(result)	
+								}
+						
+    DrawDiagram(root);
+});
+
+
+function DrawDiagram(nodeData)
+{
+
+ 
+    var width = 600;
+    var height = 600;
+    var radius = Math.min(width, height) / 2;
+    var color = d3.scaleSequential(d3.interpolateInferno).domain([0, 5])
+
+    // Create primary <g> element
+    var svg = d3.select("body").append("svg")
+        .attr('width', width+1000)
+        .attr('height', height+1000)
+     
+	width = width+ 200;
+	height = height + 200
+	var RaagaChart =   svg.append('g').attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')');
+
+    // Data strucure
+    var partition = d3.partition()
+        .size([2 * Math.PI, radius]);
+
+    // Find data root
+    var root = d3.hierarchy(nodeData)
+        .sum(function (d) { return d.size});
+
+    // Size arcs
+    partition(root);
+    var arc = d3.arc()
+        .startAngle(function (d) { return d.x0 })
+        .endAngle(function (d) { return d.x1 })
+        .innerRadius(function (d) {  return d.depth == 1 ? 0: d.y0 })
+        .outerRadius(function (d) { if(d.depth == 5) {return (d.y1 + d.y0)/2 } else return d.y1});
+
+ function angle(d, offset, threshold) {
+          var a = (d.x0 + d.x1) * 90 / Math.PI + offset;
+          return a > threshold ? a - 180 : a;
+        }
+    // Put it all together
+ var DonoughtChart =   RaagaChart.append("g").attr("id","donought_chart").selectAll('path')
+        .data(root.descendants())
+        .enter().append('path')
+        .attr("display", function (d) { return d.depth ? null : "none"; })
+		.style('stroke', '#fff')
+        .style("fill", function (d) { return color(d.depth); })
+		.attr("d", arc);
+		
+		
+		
+		
+ var DonoughtChartLabel = RaagaChart.append("g").selectAll(".ChartLabel").data(root.descendants())
+    .enter().append("text").attr("class","ChartLabel")
+           
+            .attr("dx", function(d) {
+			if(d.depth == 5){
+			var a = angle(d, 0, 0);
+			return a < 0 ? "-8px" : "8px";
+			}
+              var a = angle(d, 0, 0);
+              return a < 0 ? "-16px" : "16px";
+            })
+            .attr("text-anchor", function(d) {
+              var a = angle(d, 0, 0);
+              return a < 0 ? "start" : "end";
+            })
+            .attr("transform", function(d) { //set text'ss origin to the centroid
+              //we have to make sure to set these before calling arc.centroid
+              d.innerRadius = (width/8); // Set Inner Coordinate
+              d.outerRadius = (width/4); // Set Outer Coordinate
+              return "translate(" + arc.centroid(d) + ")rotate(" + angle(d, -90, 90) + ")";
+            })
+            .style("fill", "Black")
+            .style("font", "normal 10px Arial")
+            .text(function(d) { return d.data.name; });
+           
+		
+	
+	
+	var arcs = svg.append("g").selectAll("path").data(root.descendants())
+    .enter().append("path")
+    .attr("fill","none")
+    .attr("id", function(d,i){return "s"+i;})
+    .attr("d", function(d){return "M "+d.x0+","+d.y0+" L "+d.x1+","+d.y1})
+		
+
+
+
+svg.append("g").attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')').selectAll("text").data(root.descendants())
+    .enter()
+    .append("text")
+     .attr("text-anchor", function(d) {
+              var a = angle(d, 0, 0);
+              return a < 0 ? "start" : "end";
+            })
+    .attr("x", function(d) {
+        var a = d.x0 + (d.x1 - d.x0)/2 - Math.PI/2;
+        d.cx = Math.cos(a) * (radius -30);
+		 
+        return  d.x = Math.cos(a) * (radius + 20 );
+    })
+    .attr("y", function(d) {
+        var a = d.x0 + (d.x1 - d.x0)/2 - Math.PI/2;
+        d.cy = Math.sin(a) * (radius - 30);
+		if(Math.abs(angle(d,0,0)) <= 20)
+		{
+		return d.y = Math.sin(a) * (radius  + 40 + ( 20 - Math.abs(angle(d,0,0)))*3  );
+		}
+		if(Math.abs(angle(d,0,0)) >= 160)
+		{
+		return d.y = Math.sin(a) * (radius  + 20 + (  Math.abs(angle(d,0,0)) - 160)*3  );
+		}
+        return d.y = Math.sin(a) * (radius  + 20);
+    })
+    .text(function(d) { return d.data.RaagaName; })
+    .each(function(d,i) {
+
+        var bbox = this.getBBox();
+        d.sx = d.x - bbox.width/20 - 2;
+        d.ox = d.x + bbox.width/20 + 2;
+        d.sy = d.oy = d.y + 5;
+		d.angle = angle(d,0,0);
+	
+    });
+	
+   
+
+svg.append("defs").append("marker")
+    .attr("id", "circ")
+    .attr("markerWidth", 6)
+    .attr("markerHeight", 6)
+    .attr("refX", 3)
+    .attr("refY", 3)
+    .append("circle")
+    .attr("cx", 3)
+    .attr("cy", 3)
+    .attr("r", 3);
+
+svg.append("g").attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')').selectAll(".pointer").data(root.descendants()).enter()
+    .append("path")
+    .attr("class", "pointer")
+    .style("fill", "none")
+    .style("stroke", "black")
+    .attr("marker-end", "url(#circ)")
+    .attr("d", function(d) {
+	if(d.depth == 5){
+        if(d.cx > d.ox) {
+		    if( Math.abs(angle(d, 0, 0)) <= 5 || Math.abs(angle(d, 0, 0)) >= 175)
+			{
+			console.log("Here")
+			return "M" + d.sx + "," + d.sy + "L" + d.ox + "," + (d.oy - 100)  + " " + d.cx + "," + d.cy;
+			}
+		
+            return "M" + d.sx + "," + d.sy + "L" + d.ox + "," + d.oy  + " " + d.cx + "," + d.cy;
+        } else {
+            return "M" + d.ox + "," + d.oy + "L" + d.sx + "," + d.sy + " " + d.cx + "," + d.cy;
+        }   
+		}
+		return ""
+		
+
+})
+
+}
+  
+</script>
+
+</HTML>
